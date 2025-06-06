@@ -44,7 +44,7 @@ public class Person {
             for (String line : Files.readAllLines(new File(FILE_PATH).toPath())) {
                 String[] parts = line.split("\\|");
                 if (parts[0].equals(this.id)) {
-                    int age = calculateAge(parts[4]);
+                    int age = calculateAge(parts[5]);
                     if (!newBirthdate.equals(parts[8])) {
                         newID = this.id;
                         newFirstName = parts[1];
@@ -82,7 +82,7 @@ public class Person {
                 String[] parts = line.split("\\|");
                 if (parts[0].equals(id)) {
                     found = true;
-                    int age = calculateAge(parts[4]);
+                    int age = calculateAge(parts[5]);
                     List<String[]> offenses = new ArrayList<>();
                     int totalPoints = points;
 
