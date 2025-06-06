@@ -12,14 +12,14 @@ public class PersonTest {
     public void clearPersonDataFile() {
         try {
             PrintWriter writer = new PrintWriter("data/PersonData.txt");
-            writer.print(""); // Clear file content before each test
+            writer.print(""); 
             writer.close();
         } catch (Exception e) {
             System.out.println("Failed to clear file: " + e.getMessage());
         }
     }
 
-    // ======== Test Cases for addPerson() ========
+    
 
     @Test
     public void testAddValidPerson() {
@@ -30,28 +30,28 @@ public class PersonTest {
     @Test
     public void testAddPerson_InvalidID() {
         Person person = new Person("12abc!!XYZ", "Test", "User", "32|Highland Street|Melbourne|Victoria|Australia", "01-01-2000");
-        assertFalse(person.addPerson()); // ID doesn't start with 2–9
+        assertFalse(person.addPerson()); 
     }
 
     @Test
     public void testAddPerson_InsufficientSpecialChars() {
         Person person = new Person("34abcdEFGH", "Test", "User", "32|Highland Street|Melbourne|Victoria|Australia", "01-01-2000");
-        assertFalse(person.addPerson()); // Not enough special characters in middle
+        assertFalse(person.addPerson()); 
     }
 
     @Test
     public void testAddPerson_WrongStateInAddress() {
         Person person = new Person("34@#bcEFGH", "Test", "User", "32|Highland Street|Melbourne|NSW|Australia", "01-01-2000");
-        assertFalse(person.addPerson()); // State must be Victoria
+        assertFalse(person.addPerson()); 
     }
 
     @Test
     public void testAddPerson_InvalidBirthdateFormat() {
         Person person = new Person("34@#bcEFGH", "Test", "User", "32|Highland Street|Melbourne|Victoria|Australia", "2000-01-01");
-        assertFalse(person.addPerson()); // Wrong birthdate format
+        assertFalse(person.addPerson()); 
     }
 
-    // ======== Test Cases for updatePersonalDetails() ========
+    
 
     @Test
     public void testUpdateValidDetails() {
@@ -66,7 +66,7 @@ public class PersonTest {
         Person person = new Person("24ab!!GHXY", "Bob", "Brown", "99|High St|Melbourne|Victoria|Australia", "01-01-2010");
         person.addPerson();
         boolean updated = person.updatePersonalDetails("24ab!!GHXY", "Bob", "Brown", "88|New St|Melbourne|Victoria|Australia", "01-01-2010");
-        assertFalse(updated); // Update with invalid address for under-18
+        assertFalse(updated); 
     }
 
     @Test
@@ -93,7 +93,7 @@ public class PersonTest {
         assertFalse(result);
     }
 
-    // ======== Test Cases for addDemeritPoints() ========
+    
 
     @Test
     public void testAddDemeritPointsValid() {
@@ -108,7 +108,7 @@ public class PersonTest {
         Person person = new Person("60@@xxEFGH", "Tim", "Junior", "50|River St|Melbourne|Victoria|Australia", "01-01-2005");
         person.addPerson();
         person.addDemeritPoints("01-01-2024", 4);
-        String result = person.addDemeritPoints("01-02-2024", 4); // total = 8
+        String result = person.addDemeritPoints("01-02-2024", 4); 
         assertEquals("Success", result);
     }
 
@@ -117,7 +117,7 @@ public class PersonTest {
         Person person = new Person("61@@xxEFGH", "Adult", "Driver", "12|Main St|Melbourne|Victoria|Australia", "01-01-1990");
         person.addPerson();
         person.addDemeritPoints("01-01-2024", 6);
-        String result = person.addDemeritPoints("01-02-2024", 7); // total = 13
+        String result = person.addDemeritPoints("01-02-2024", 7); 
         assertEquals("Success", result);
     }
 

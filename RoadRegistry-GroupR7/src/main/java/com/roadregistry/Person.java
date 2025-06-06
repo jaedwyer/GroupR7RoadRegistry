@@ -23,16 +23,33 @@ public class Person {
     }
 
     public boolean addPerson() {
-        if (!isValidID(id) || !isValidAddress(address) || !isValidBirthdate(birthdate)) return false;
+    if (!isValidID(id) || !isValidAddress(address) || !isValidBirthdate(birthdate)) return false;
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
-            writer.write(String.join("|", id, firstName, lastName, address, birthdate, String.valueOf(isSuspended)));
-            writer.newLine();
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+        String[] addrParts = address.split("\\|");
+        if (addrParts.length != 5) return false; 
+
+        String record = String.join("|",
+                id,
+                firstName,
+                lastName,
+                addrParts[0],  
+                addrParts[1],  
+                addrParts[2],  
+                addrParts[3],  
+                addrParts[4],  
+                birthdate,
+                String.valueOf(isSuspended) 
+        );
+
+        writer.write(record);
+        writer.newLine();
+        return true;
+    } catch (IOException e) {
+        return false;
     }
+}
+
 
     public boolean updatePersonalDetails(String newID, String newFirstName, String newLastName, String newAddress, String newBirthdate) {
         if (!isValidID(newID) || !isValidAddress(newAddress) || !isValidBirthdate(newBirthdate)) return false;
@@ -44,7 +61,7 @@ public class Person {
             for (String line : Files.readAllLines(new File(FILE_PATH).toPath())) {
                 String[] parts = line.split("\\|");
                 if (parts[0].equals(this.id)) {
-                    int age = calculateAge(parts[5]);
+                    int age = calculateAge(parts[8]);
                     if (!newBirthdate.equals(parts[8])) {
                         newID = this.id;
                         newFirstName = parts[1];
@@ -82,11 +99,11 @@ public class Person {
                 String[] parts = line.split("\\|");
                 if (parts[0].equals(id)) {
                     found = true;
-                    int age = calculateAge(parts[5]);
+                    int age = calculateAge(parts[8]);
                     List<String[]> offenses = new ArrayList<>();
                     int totalPoints = points;
 
-                    // collect valid offenses within last 2 years
+                    
                     for (int i = 10; i < parts.length; i++) {
                         String[] offense = parts[i].split(",");
                         if (withinTwoYears(offense[0], offenseDate)) {
@@ -97,7 +114,7 @@ public class Person {
 
                     boolean shouldSuspend = (age < 21 && totalPoints > 6) || (age >= 21 && totalPoints > 12);
 
-                    // rebuild line
+                    
                     StringBuilder updated = new StringBuilder();
                     for (int i = 0; i < 9; i++) {
                         updated.append(parts[i]).append("|");
